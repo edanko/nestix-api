@@ -1,0 +1,130 @@
+app:
+  environment: development
+  shutdownTimeout: 5s
+#db:
+#  host: 192.168.1.164
+#  port: 5432
+#  user: postgres
+#  password: mysecretpassword
+#  database: omgr
+#  sslMode: disable
+nats:
+  host: 192.168.1.164
+  port: 4222
+debug:
+  host: 0.0.0.0
+  port: 4000
+http:
+  host: 0.0.0.0
+  port: 3000
+  readTimeout: 5s
+  writeTimeout: 10s
+  idleTimeout: 120s
+grpc:
+  host: 0.0.0.0
+  port: 3001
+  serverMinTime: 5m
+  serverTime: 2h
+  serverTimeout: 20s
+  connTime: 10s
+  connTimeout: 20s
+tenants:
+  69K:
+    master: E:\NxSC_Zvezda_69K\master
+    site: Zvezda
+    db:
+      user: sa
+      password: Passw@rd
+      host: 192.168.1.164
+      port: 1433
+      database: NxSC_Zvezda_69K
+  120K:
+    master: E:\NxSC_Zvezda_120K\master
+    site: Zvezda
+    db:
+      user: sa
+      password: Passw@rd
+      host: 192.168.1.164
+      port: 1433
+      database: NxSC_Zvezda_120K
+  123:
+    master: E:\NxSC_Zvezda_123\master
+    site: Zvezda
+    db:
+      user: sa
+      password: Passw@rd
+      host: 192.168.1.164
+      port: 1433
+      database: NxSC_Zvezda_123
+  10510:
+    master: E:\NxSC_Zvezda_10510\master
+    site: Zvezda
+    db:
+      user: sa
+      password: Passw@rd
+      host: 192.168.1.164
+      port: 1433
+      database: NxSC_Zvezda_10510
+  22430:
+    master: E:\NxSC_Zvezda_22430\master
+    site: Zvezda
+    db:
+      user: sa
+      password: Passw@rd
+      host: 192.168.1.164
+      port: 1433
+      database: NxSC_Zvezda_22430
+  22480:
+    master: E:\NxSC_Zvezda_22480\master
+    site: Zvezda
+    db:
+      user: sa
+      password: Passw@rd
+      host: 192.168.1.164
+      port: 1433
+      database: NxSC_Zvezda_22480
+  AFRA:
+    master: E:\NxSC_Zvezda_AFRA\master
+    site: Zvezda
+    db:
+      user: sa
+      password: Passw@rd
+      host: 192.168.1.164
+      port: 1433
+      database: NxSC_Zvezda_AFRA
+  IBSV:
+    master: E:\NxSC_Zvezda_IBSV\master
+    site: Zvezda
+    db:
+      user: sa
+      password: Passw@rd
+      host: 192.168.1.164
+      port: 1433
+      database: NxSC_Zvezda_IBSV
+  Master:
+    master: E:\NxSC_Zvezda_Master\master
+    site: Zvezda
+    db:
+      user: sa
+      password: Passw@rd
+      host: 192.168.1.164
+      port: 1433
+      database: NxSC_Zvezda_120K
+  MR:
+    master: E:\NxSC_Zvezda_MR\master
+    site: Zvezda
+    db:
+      user: sa
+      password: Passw@rd
+      host: 192.168.1.164
+      port: 1433
+      database: NxSC_Zvezda_MR
+  OSNASTKA:
+    master: E:\NxSC_Zvezda_OSNASTKA\master
+    site: Zvezda
+    db:
+      user: sa
+      password: Passw@rd
+      host: 192.168.1.164
+      port: 1433
+      database: NxSC_Zvezda_OSNASTKA

@@ -1,0 +1,59 @@
+version: '3'
+
+tasks:
+  run:
+    desc: Run nestix-api
+    dir: ./cmd/nestix-api
+    cmds:
+      - go run .
+
+  build:
+    desc: Build nestix-api
+    cmds:
+      - go build -o nestix-api.exe ./cmd/nestix-api
+
+  lint:
+    desc: Run linters
+    cmds:
+      - go vet ./...
+      - golangci-lint run
+      - buf lint
+
+  test:
+    desc: Run tests
+    cmds:
+      - go test ./...
+
+  format:
+    desc: Run source files with golines and goimports
+    cmds:
+      - buf format -w
+      - for f in $(find . -name *.go -print); do golines --base-formatter="goimports -local $(go list -m)" -w $f; done
+
+  cover:
+    desc: Go code coverage
+    cmds:
+      - go test ./... -coverprofile=coverage.out
+      - go tool cover -func=coverage.out | grep ^total
+      # - go tool cover -html=coverage.out
+      - rm -f coverage.out
+
+  generate:
+    desc: Generate Go code
+    cmds:
+      - go generate
+      - buf generate
+      - oapi-codegen -old-config-style -generate types -o "cmd/launch-api/internal/ports/openapi_types.gen.go" -package "ports" "api/openapi/v1/launch.yaml"
+      - oapi-codegen -old-config-style -generate server -o "cmd/launch-api/internal/ports/openapi_api.gen.go" -package "ports" "api/openapi/v1/launch.yaml"
+
+  tools:
+    desc: Install tools
+    cmds:
+      - go install github.com/segmentio/golines@latest
+      - go install golang.org/x/tools/cmd/goimports@latest
+      - go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+      - go install github.com/bufbuild/buf/cmd/buf@latest # not recommended way to install
+      - go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+      - go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+      - go install entgo.io/ent/cmd/ent@latest
+      - go install github.com/deepmap/oapi-codegen/cmd/oapi-codegen@latest
