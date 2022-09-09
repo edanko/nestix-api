@@ -1,0 +1,118 @@
+syntax = "proto3";
+
+package kind.v1;
+
+option go_package = "pkg/genproto/launch/v1;proto";
+
+// KindService handles commands dispatch and kind view actions
+service KindService {
+  rpc CreateKind(CreateKindRequest) returns (CreateKindResponse);
+  rpc DeleteKind(DeleteKindRequest) returns (DeleteKindResponse);
+  rpc MakeKindPublished(MakeKindPublishedRequest) returns (MakeKindPublishedResponse);
+  rpc MakeKindDraft(MakeKindDraftRequest) returns (MakeKindDraftResponse);
+  rpc ChangeKindDescription(ChangeKindDescriptionRequest) returns (ChangeKindDescriptionResponse);
+  rpc ChangeKindName(ChangeKindNameRequest) returns (ChangeKindNameResponse);
+
+  rpc GetKind(GetKindRequest) returns (GetKindResponse);
+  rpc GetKindByName(GetKindByNameRequest) returns (GetKindByNameResponse);
+  //  rpc CountKinds (CountKindsRequest) returns (CountKindsResponse);
+  rpc ListKinds(ListKindsRequest) returns (stream ListKindsResponse);
+}
+
+enum KindStatus {
+  KIND_STATUS_UNSPECIFIED = 0;
+  KIND_STATUS_DRAFT = 1;
+  KIND_STATUS_PUBLISHED = 2;
+  //  KIND_STATUS_SCHEDULED = 2;
+  //  KIND_STATUS_ARCHIVED = 3;
+  //  KIND_STATUS_ACTIVE = 4;
+}
+
+// Kind object
+message Kind {
+  string id = 1;
+  string name = 2;
+  optional string description = 3;
+  KindStatus status = 4;
+}
+
+message CreateKindRequest {
+  string id = 1;
+  string name = 2;
+  optional string description = 3;
+  KindStatus status = 4;
+}
+
+message CreateKindResponse {}
+
+message DeleteKindRequest {
+  string id = 1;
+}
+
+message DeleteKindResponse {}
+
+message MakeKindPublishedRequest {
+  string id = 1;
+}
+
+message MakeKindPublishedResponse {}
+
+message MakeKindDraftRequest {
+  string id = 1;
+}
+
+message MakeKindDraftResponse {}
+
+message ChangeKindDescriptionRequest {
+  string id = 1;
+  string description = 2;
+}
+
+message ChangeKindDescriptionResponse {}
+
+message ChangeKindNameRequest {
+  string id = 1;
+  string name = 2;
+}
+
+message ChangeKindNameResponse {}
+
+// GetKindRequest is a request data to read kind
+message GetKindRequest {
+  string id = 1;
+}
+
+message GetKindResponse {
+  Kind kind = 1;
+}
+
+message GetKindByNameRequest {
+  string name = 1;
+}
+
+message GetKindByNameResponse {
+  Kind kind = 1;
+}
+
+//message CountKindsRequest {
+//  optional string status = 1;
+//}
+//
+//message CountKindsResponse {
+//  int32 total = 1;
+//}
+
+// ListKindRequest is a request data to read all kind for a given page
+message ListKindsRequest {
+  optional int32 limit = 1;
+  optional string after = 2;
+  optional KindStatus status = 3;
+}
+
+// ListKindResponse list of all kinds
+message ListKindsResponse {
+  repeated Kind kinds = 1;
+  string after = 2;
+  int32 limit = 3;
+  //  int32 total = 4;
+}

@@ -1,0 +1,176 @@
+services:
+  # api:
+  #   build:
+  #     context: ./backend
+  #     dockerfile: ./services/api/Dockerfile
+  #   container_name: api
+  #   restart: always
+  #   depends_on:
+  #     - nats
+  #     - kind-service
+  #     - auth-service
+  #     - project-service
+  #     - user-service
+  #     - order-service
+  #   ports:
+  #     - 9000:9000
+  #   env_file:
+  #     - .env
+  #   networks:
+  #     - api
+
+  kind-service:
+    build:
+      context: .
+      dockerfile: ./docker/app/Dockerfile
+      args:
+        BIN: kind
+    ports:
+      - 3000:3000
+      - 3001:3001
+    container_name: kind-service
+    restart: always
+    depends_on:
+      - nats
+      - mongodb
+    env_file:
+      - .env
+    networks:
+      - api
+
+  # kind-cli:
+  #   build:
+  #     context: ./backend
+  #     dockerfile: ./cmd/kind/Dockerfile
+  #   container_name: kind-cli
+  #   depends_on:
+  #     - nats
+  #     - mongodb
+  #     - kind-service
+  #   env_file:
+  #     - .env
+  #   networks:
+  #     - api
+
+  # project-service:
+  #   build:
+  #     context: ./backend
+  #     dockerfile: ./services/project/Dockerfile
+  #   container_name: project-service
+  #   restart: always
+  #   depends_on:
+  #     - nats
+  #     - mongodb
+  #   env_file:
+  #     - .env
+  #   networks:
+  #     - api
+
+  # user-service:
+  #   build:
+  #     context: ./backend
+  #     dockerfile: ./services/user/Dockerfile
+  #   container_name: user-service
+  #   restart: always
+  #   depends_on:
+  #     - nats
+  #     - mongodb
+  #   env_file:
+  #     - .env
+  #   networks:
+  #     - api
+
+  # auth-service:
+  #   build:
+  #     context: ./backend
+  #     dockerfile: ./services/auth/Dockerfile
+  #   container_name: auth-service
+  #   restart: always
+  #   depends_on:
+  #     - nats
+  #     - mongodb
+  #     - user-service
+  #   env_file:
+  #     - .env
+  #   networks:
+  #     - api
+
+  # order-service:
+  #   build:
+  #     context: ./backend
+  #     dockerfile: ./services/order/Dockerfile
+  #   container_name: order-service
+  #   restart: always
+  #   depends_on:
+  #     - nats
+  #     - mongodb
+  #     - redis
+  #   env_file:
+  #     - .env
+  #   networks:
+  #     - api
+
+  # frontend:
+  #   build:
+  #     context: ./frontend
+  #   container_name: frontend
+  #   restart: always
+  #   depends_on:
+  #     - api
+  #   ports:
+  #     - 80:80
+  #   networks:
+  #     - api
+
+  # minio:
+  #   image: minio/minio
+  #   container_name: minio
+  #   restart: always
+  #   commands: server /data --console-address ":9001"
+  #   ports:
+  #     - 9001:9001
+  #   environment:
+  #     MINIO_ACCESS_KEY: minio-access-key
+  #     MINIO_SECRET_KEY: minio-secret-key
+  #     MINIO_ROOT_USER: minio
+  #     MINIO_ROOT_PASSWORD: minio123
+  #   volumes:
+  #     - ./minio:/data
+  #   networks:
+  #     - api
+
+  nats:
+    image: nats:latest-alpine
+    container_name: nats
+    restart: unless-stopped
+    ports:
+      - "4222:4222"
+    command: [ "-js" ]
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
+    networks:
+      - api
+
+  db:
+    image: postgres:15beta2-alpine
+    container_name: postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: example
+      PGDATA: /data/postgres
+    volumes:
+      - postgres:/data/postgres
+    networks:
+      - api
+
+networks:
+  api:
+    driver: bridge
+
+volumes:
+  postgres:
